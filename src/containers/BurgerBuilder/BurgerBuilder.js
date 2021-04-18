@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Burger from "../../components/Burger/Burger";
-import Auxs from "../../hoc/Auxs";
+import Auxs from "../../hoc/Auxs/Auxs";
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 
@@ -68,8 +68,17 @@ export default class auxs extends Component {
     this.updatePurchaseState(updatedIngredients)
   }
 
-  purchaseHandler () {
+  purchaseHandler = () => {
     this.setState({purchasing : true})
+  }
+
+  purchaseCancelHandler = () => {
+    console.log("purchaseCancelHandler")
+    this.setState({purchasing : false})
+  }
+
+  purchaseContinueHandler = () => {
+    alert('You continue!')
   }
 
   render() {
@@ -81,8 +90,13 @@ export default class auxs extends Component {
     }
     return (
         <Auxs>
-            <Modal show={this.state.purchasing}>
-                <OrderSummary ingredients={this.state.ingredients} />
+            <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+                <OrderSummary 
+                  ingredients={this.state.ingredients} 
+                  purchaseCancelled = {this.purchaseCancelHandler}
+                  purchaseContinued = {this.purchaseContinueHandler}
+                  price={this.state.totalPrice}
+                />
             </Modal>
             <Burger ingredients={this.state.ingredients} />
             <BuildControls 
